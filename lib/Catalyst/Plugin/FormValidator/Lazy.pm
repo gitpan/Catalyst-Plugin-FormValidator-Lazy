@@ -6,7 +6,7 @@ use NEXT;
 use UNIVERSAL::require;
 use Data::FormValidator;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 #{{{ setup
 sub setup {
@@ -44,6 +44,13 @@ sub has_dfv_error {
     }
 }
 #}}}
+
+sub prepare {
+    my $c = shift;
+    $c = $c->NEXT::prepare(@_);
+    $c->{form} = Data::FormValidator->check( $c->request->parameters, {} );
+    return $c;
+}
 
 #{{{ form 
 sub form {
